@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Will You Go Out With Me?</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    :root {
+      --bg-color: #ffb7c5;
+      --card-bg: #fff0f5;
+      --border-color: #d63384;
+      --accent-pink: #ff4d6d;
+      --text-color: #8b0046;
+      --btn-hover: #ff758f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Floating pixel background details */
+    .hearts-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* Pink Pixel Grass Bottom Bar */
+    .pixel-grass {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background: repeating-linear-gradient(
+        90deg,
+        #ff85a1,
+        #ff85a1 10px,
+        #f72585 10px,
+        #f72585 20px
+      );
+      box-shadow: 0 -4px 0 #b5179e;
+      z-index: 1;
+    }
+
+    .container {
+      background-color: var(--card-bg);
+      border: 6px solid var(--border-color);
+      border-radius: 20px;
+      padding: 25px 20px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 6px 6px 0px #8b0046;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      text-transform: uppercase;
+      color: var(--border-color);
+    }
+
+    .gif-container img {
+      width: 150px;
+      height: 150px;
+      border: 4px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      object-fit: cover;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font-family: 'Press Start 2P', cursive;
+      background-color: var(--accent-pink);
+      color: white;
+      border: 3px solid var(--border-color);
+      padding: 12px 18px;
+      font-size: 0.75rem;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px var(--border-color);
+      transition: transform 0.1s;
+    }
+
+    button:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--border-color);
+    }
+
+    #no-btn {
+      background-color: #adb5bd;
+      border-color: #495057;
+      color: #212529;
+      box-shadow: 3px 3px 0px #495057;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .option-btn {
+      background-color: #ffffff;
+      color: var(--border-color);
+      border: 3px solid var(--border-color);
+      padding: 10px 6px;
+      font-size: 0.55rem;
+      border-radius: 8px;
+      box-shadow: 2px 2px 0px var(--border-color);
+    }
+
+    .option-btn.selected {
+      background-color: var(--accent-pink);
+      color: white;
+    }
+
+    input[type="date"] {
+      font-family: 'Press Start 2P', cursive;
+      padding: 10px;
+      border: 3px solid var(--border-color);
+      border-radius: 8px;
+      width: 100%;
+      margin-bottom: 20px;
+      font-size: 0.65rem;
+      background: white;
+      color: var(--text-color);
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Floating Pixel Hearts -->
+  <div class="hearts-container" id="hearts-container"></div>
+
+  <!-- Step 1: Question -->
+  <div id="step-1" class="container">
+    <div class="gif-container">
+      <img src="https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute Cat" />
+    </div>
+    <h1>Will you go out with me?</h1>
+    <div class="btn-group">
+      <button id="yes-btn">YES!</button>
+      <button id="no-btn">No</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Date Picker -->
+  <div id="step-2" class="container hidden">
+    <h2>PICK A DATE</h2>
+    <p style="font-size: 0.5rem; margin-bottom: 15px;">CHOOSE THE DAY FOR OUR CUTE LITTLE PLAN</p>
+    <input type="date" id="date-picker" />
+    <button id="next-to-step3">CONTINUE →</button>
+  </div>
+
+  <!-- Step 3: Activities -->
+  <div id="step-3" class="container hidden">
+    <h2>WHAT WOULD YOU LIKE TO DO?</h2>
+    <div class="options-grid">
+      <button class="option-btn" onclick="selectActivity(this, 'DINNER DATE')">DINNER DATE</button>
+      <button class="option-btn" onclick="selectActivity(this, 'MOVIE NIGHT')">MOVIE NIGHT</button>
+      <button class="option-btn" onclick="selectActivity(this, 'COFFEE & WALK')">COFFEE & WALK</button>
+      <button class="option-btn" onclick="selectActivity(this, 'PICNIC')">PICNIC</button>
+      <button class="option-btn" onclick="selectActivity(this, 'MINI GOLF')">MINI GOLF</button>
+      <button class="option-btn" onclick="selectActivity(this, 'SURPRISE ME')">SURPRISE ME</button>
+    </div>
+    <button id="submit-btn" style="width: 100%; margin-top: 10px;">LOCK IT IN 🔒</button>
+  </div>
+
+  <!-- Step 4: Final Screen -->
+  <div id="step-4" class="container hidden">
+    <h2>IT'S A DATE! 🎉</h2>
+    <div id="summary-text" style="margin-top: 15px; font-size: 0.65rem; line-height: 1.8;"></div>
+  </div>
+
+  <!-- Pixel Grass decorative bar -->
+  <div class="pixel-grass"></div>
+
+  <script>
+    const FORMSPREE_ENDPOINT = "YOUR_FORMSPREE_ENDPOINT_HERE";
+
+    let selectedDate = "";
+    let selectedActivity = "";
+    let yesBtnScale = 1;
+
+    const noBtnMessages = [
+      "Are you sure?",
+      "Better say yes!",
+      "Please say yes 🙏",
+      "Don't do this!",
+      "Heart broken :("
+    ];
+    let noClickCount = 0;
+
+    // Background floating hearts animation logic
+    const heartsContainer = document.getElementById('hearts-container');
+    for (let i = 0; i < 15; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerText = '💗';
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.animationDelay = `${Math.random() * 5}s`;
+      heart.style.animationDuration = `${4 + Math.random() * 4}s`;
+      heartsContainer.appendChild(heart);
+    }
+
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+
+    noBtn.addEventListener('click', () => {
+      if (noClickCount < noBtnMessages.length) {
+        noBtn.innerText = noBtnMessages[noClickCount];
+        noClickCount++;
+      }
+      yesBtnScale += 0.25;
+      yesBtn.style.transform = `scale(${yesBtnScale})`;
+    });
+
+    yesBtn.addEventListener('click', () => {
+      document.getElementById('step-1').classList.add('hidden');
+      document.getElementById('step-2').classList.remove('hidden');
+    });
+
+    document.getElementById('next-to-step3').addEventListener('click', () => {
+      selectedDate = document.getElementById('date-picker').value;
+      if (!selectedDate) {
+        alert("Please pick a date!");
+        return;
+      }
+      document.getElementById('step-2').classList.add('hidden');
+      document.getElementById('step-3').classList.remove('hidden');
+    });
+
+    function selectActivity(element, activity) {
+      document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedActivity = activity;
+    }
+
+    document.getElementById('submit-btn').addEventListener('click', () => {
+      if (!selectedActivity) {
+        alert("Please select an activity!");
+        return;
+      }
+
+      document.getElementById('step-3').classList.add('hidden');
+      document.getElementById('step-4').classList.remove('hidden');
+      document.getElementById('summary-text').innerHTML = `DATE: ${selectedDate}<br><br>ACTIVITY: ${selectedActivity}`;
+
+      sendNotification(selectedDate, selectedActivity);
+    });
+
+    function sendNotification(date, activity) {
+      if (FORMSPREE_ENDPOINT === "YOUR_FORMSPREE_ENDPOINT_HERE") return;
+
+      fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          response: "YES!",
+          chosen_date: date,
+          chosen_activity: activity
+        })
+      });
+    }
+  </script>
+</body>
+</html>
